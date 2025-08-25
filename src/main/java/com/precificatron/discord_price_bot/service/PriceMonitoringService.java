@@ -22,7 +22,7 @@ public class PriceMonitoringService {
 
     private BigDecimal lastPrice = new BigDecimal(Double.MAX_VALUE);
 
-    @Scheduled(fixedRate= 1000)
+    @Scheduled(fixedRate= 10000)
     public void checkPrice() {
         try {
             Document doc = Jsoup.connect(productUrl)
@@ -30,11 +30,11 @@ public class PriceMonitoringService {
                     .get();
             String priceText= doc.selectFirst(priceSelector).text();
 
-            String CleanText = priceText.replaceAll("[^0-9,]", "")
-                    .replace(",", "").replace(",", ".");
-            BigDecimal price = new BigDecimal(CleanText);
-            System.out.println("preço encontrado" + price);
-            System.out.println("Ultimo preço encontrado" + lastPrice);
+            String cleanText = priceText.replaceAll("[^0-9,]", "")
+                    .replace(",", ".");
+            BigDecimal price = new BigDecimal(cleanText);
+            System.out.println("preço encontrado: " + price);
+            System.out.println("Ultimo preço encontrado: " + lastPrice);
 
             if(price.compareTo(lastPrice)<0){
                 System.out.println("PROMOÇAO ENCONTRADA DE R$" + lastPrice +" para R$" + price);
