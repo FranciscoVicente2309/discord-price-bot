@@ -59,8 +59,7 @@ public class DiscordNotificationService {
 
 
     private String createPromotionMessage(BigDecimal newPrice, BigDecimal oldPrice, String productUrl) {
-        // Se o preço antigo for nulo (primeira execução), exibe "N/A".
-        // Caso contrário, formata o preço com duas casas decimais.
+
         String oldPriceText = (oldPrice == null) ? "N/A" : String.format("R$ %.2f", oldPrice);
 
         return String.format(
