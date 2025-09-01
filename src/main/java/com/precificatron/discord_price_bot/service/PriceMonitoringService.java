@@ -22,6 +22,12 @@ public class PriceMonitoringService {
 
     private BigDecimal lastPrice = null;
 
+    private final DiscordNotificationService notificationService;
+
+    public PriceMonitoringService(DiscordNotificationService notificationService) {
+        this.notificationService = notificationService;
+    }
+
     @Scheduled(fixedRate= 10000)
     public void checkPrice() {
         try {
@@ -38,6 +44,7 @@ public class PriceMonitoringService {
 
             if (lastPrice == null || price.compareTo(lastPrice) < 0) {
                 System.out.println("PROMOÇAO ENCONTRADA DE R$" + lastPrice +" para R$" + price);
+                notificationService.sendPublicPromotionAlert(price, lastPrice, productUrl);
                 lastPrice=price;
             } else {
                 System.out.println("nada de promo por aqui");
