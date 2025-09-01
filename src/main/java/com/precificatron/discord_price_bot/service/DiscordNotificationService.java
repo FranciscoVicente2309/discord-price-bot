@@ -22,17 +22,12 @@ public class DiscordNotificationService {
     @Value("${discord.user.id:-1}")
     private long userId;
 
-    /**
-     * Construtor para injeção de dependência.
-     * O Spring automaticamente fornecerá o Bean JDA que criamos.
-     */
+
     public DiscordNotificationService(JDA jda) {
         this.jda = jda;
     }
 
-    /**
-     * Envia um alerta de promoção para um canal de texto público configurado.
-     */
+
     public void sendPublicPromotionAlert(BigDecimal newPrice, BigDecimal oldPrice, String productUrl) {
         TextChannel channel = jda.getTextChannelById(channelId);
         if (channel != null) {
@@ -44,10 +39,7 @@ public class DiscordNotificationService {
         }
     }
 
-    /**
-     * Envia um alerta de promoção por mensagem direta (DM) para um usuário específico.
-     * Só tenta enviar se o userId estiver configurado no application.properties.
-     */
+
     public void sendPrivatePromotionAlert(BigDecimal newPrice, BigDecimal oldPrice, String productUrl) {
         if (userId == -1) {
             System.out.println("ID de usuário para DM não configurado. Pulando notificação privada.");
@@ -65,10 +57,7 @@ public class DiscordNotificationService {
         }, failure -> System.err.println("ERRO: Não foi possível encontrar o usuário com ID " + userId));
     }
 
-    /**
-     * Método auxiliar privado para criar o texto da mensagem.
-     * Evita duplicação de código e formata a mensagem de forma inteligente.
-     */
+
     private String createPromotionMessage(BigDecimal newPrice, BigDecimal oldPrice, String productUrl) {
         // Se o preço antigo for nulo (primeira execução), exibe "N/A".
         // Caso contrário, formata o preço com duas casas decimais.
@@ -89,9 +78,7 @@ public class DiscordNotificationService {
         );
     }
 
-    /**
-     * Método auxiliar para tratar erros comuns ao enviar DMs.
-     */
+
     private void handleDmFailure(Throwable failure, User user) {
         if (failure instanceof ErrorResponseException e && e.getErrorResponse() == ErrorResponse.CANNOT_SEND_TO_USER) {
             System.err.println("Falha ao enviar DM: O usuário " + user.getName() + " provavelmente tem DMs bloqueadas.");
