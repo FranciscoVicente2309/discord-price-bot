@@ -20,7 +20,7 @@ public class PriceMonitoringService {
     @Value("${monitor.price.selector}")
     private String priceSelector;
 
-    private BigDecimal lastPrice = new BigDecimal(Double.MAX_VALUE);
+    private BigDecimal lastPrice = null;
 
     @Scheduled(fixedRate= 10000)
     public void checkPrice() {
@@ -36,7 +36,7 @@ public class PriceMonitoringService {
             System.out.println("preço encontrado: " + price);
             System.out.println("Ultimo preço encontrado: " + lastPrice);
 
-            if(price.compareTo(lastPrice)<0){
+            if (lastPrice == null || price.compareTo(lastPrice) < 0) {
                 System.out.println("PROMOÇAO ENCONTRADA DE R$" + lastPrice +" para R$" + price);
                 lastPrice=price;
             } else {
