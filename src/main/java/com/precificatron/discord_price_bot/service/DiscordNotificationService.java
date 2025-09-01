@@ -65,10 +65,10 @@ public class DiscordNotificationService {
 
         return String.format(
                 """
-                        @everyone\s
+                        
                 🎉 **ALERTA DE PROMOÇÃO!** 🎉
                 
-                O preço do produto baixou!
+                O preço do produto baixou @everyone\s!
                 
                 **Preço Anterior:** %s
                 **Novo Preço:** **R$ %.2f**
