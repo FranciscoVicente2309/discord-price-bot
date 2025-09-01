@@ -18,7 +18,6 @@ public class DiscordNotificationService {
     @Value("${discord.channel.id}")
     private long channelId;
 
-    // A propriedade userId é opcional. Se não for encontrada, o valor padrão será -1.
     @Value("${discord.user.id:-1}")
     private long userId;
 
