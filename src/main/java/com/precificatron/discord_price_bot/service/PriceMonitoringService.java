@@ -48,6 +48,7 @@ public class PriceMonitoringService {
                 lastPrice=price;
             } else {
                 System.out.println("nada de promo por aqui");
+                notificationService.sendNoPromotionUpdate(price, productUrl);
             }
         }
         catch (IOException e) {

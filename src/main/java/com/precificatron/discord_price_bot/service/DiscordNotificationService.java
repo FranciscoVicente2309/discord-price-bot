@@ -31,18 +31,37 @@ public class DiscordNotificationService {
         TextChannel channel = jda.getTextChannelById(channelId);
         if (channel != null) {
             String message = createPromotionMessage(newPrice, oldPrice, productUrl);
-            channel.sendMessage(message).queue(); // Enfileira a mensagem para ser enviada
+            channel.sendMessage(message).queue();
             System.out.println("Notificação de promoção enviada para o canal #" + channel.getName());
         } else {
             System.err.println("ERRO: Canal do Discord com ID " + channelId + " não foi encontrado.");
         }
     }
-
+    public void sendNoPromotionUpdate(BigDecimal currentPrice, String productUrl) {
+        TextChannel channel = jda.getTextChannelById(channelId);
+        if (channel != null) {
+            String message = String.format(
+                    """
+                     
+                    
+                    Nenhuma promoção encontrada para o produto :(
+                    **Preço atual:** **R$ %.2f**
+                    
+                    Continuo de olho! 
+                     %s
+                    """, currentPrice, productUrl
+            );
+            channel.sendMessage(message).queue();
+            System.out.println("Notificação de status 'sem promoção' enviada para o canal #" + channel.getName());
+        } else {
+            System.err.println("ERRO: Canal do Discord com ID " + channelId + " não foi encontrado.");
+        }
+    }
 
     public void sendPrivatePromotionAlert(BigDecimal newPrice, BigDecimal oldPrice, String productUrl) {
         if (userId == -1) {
             System.out.println("ID de usuário para DM não configurado. Pulando notificação privada.");
-            return; // Interrompe a execução se não houver ID de usuário
+            return;
         }
 
         jda.retrieveUserById(userId).queue(user -> {
@@ -66,7 +85,7 @@ public class DiscordNotificationService {
                         
                 🎉 **ALERTA DE PROMOÇÃO!** 🎉
                 
-                O preço do produto baixou @everyone\s!
+                O preço do produto baixou!
                 
                 **Preço Anterior:** %s
                 **Novo Preço:** **R$ %.2f**
